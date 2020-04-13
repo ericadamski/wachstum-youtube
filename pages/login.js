@@ -1,132 +1,138 @@
-import { useState, useReducer } from "react";
+import { useState } from "react";
+import { Formik, Form } from "formik";
+import fetch from "isomorphic-unfetch";
+import * as Yup from "yup";
+import Router from "next/router";
+import Cookie from "js-cookie";
 import Input from "../components/Input";
 import Field from "../components/Field";
 import Label from "../components/Label";
 import Button from "../components/Button";
 import EmailService from "../services/email";
 
-function reducer(state, action) {
-  let error;
+const SignupSchema = (isSignUp) =>
+  Yup.object().shape({
+    name: isSignUp && Yup.string().min(2, "too short").required("required"),
+    email: Yup.string().email("not valid").required("required"),
+    password: Yup.string().min(6, "too short").required("required"),
+  });
 
-  switch (action.type) {
-    case "update-name":
-      error = action.value?.length < 2 ? "not valid" : undefined;
-
-      return {
-        ...state,
-        name: action.value,
-        errors: { ...state.errors, name: error }
-      };
-    case "update-password":
-      error = action.value?.length < 6 ? "too short" : undefined;
-
-      return {
-        ...state,
-        password: action.value,
-        errors: { ...state.errors, password: error }
-      };
-    case "update-email":
-      error = !EmailService.valid(action.value) ? "not valid" : undefined;
-
-      return {
-        ...state,
-        email: action.value,
-        errors: { ...state.errors, email: error }
-      };
-    default:
-      return state;
-  }
-
-  return state;
-}
-
-export default props => {
+export default (props) => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [state, dispatch] = useReducer(reducer, {});
 
-  const hasError = () => {
-    if (isSignUp) {
-      // name, email, pass
-      return (
-        !(state.name && state.email && state.password) ||
-        state.errors.name !== undefined ||
-        state.errors.password !== undefined ||
-        state.errors.email !== undefined
-      );
+  const handleSubmit = async (values, context) => {
+    const request = await fetch("/api/authenticate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...values,
+        isSignUp,
+      }),
+    });
+
+    context.setSubmitting(false);
+
+    if (request.ok) {
+      const token = await request.text();
+
+      Cookie.set("_wsp", token, {
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      });
+
+      Router.push("/");
     } else {
-      // email, pass
-      return (
-        !(state.email && state.password) ||
-        state.errors.password !== undefined ||
-        state.errors.email !== undefined
-      );
+      // errors!
+      const error = await request.text();
+
+      context.setErrors({
+        general:
+          error ||
+          "There was a problem authenticating you with that email and password combination.",
+      });
     }
   };
 
   return (
     <>
       <div className="page">
-        <div className="form">
-          {isSignUp && (
-            <Field>
-              <Label error={state.errors?.name}>👩‍💻 Name</Label>
-              <Input
-                name="name"
-                type="text"
-                value={state.name}
-                onChange={({ target }) =>
-                  dispatch({ type: "update-name", value: target.value })
-                }
-              />
-            </Field>
+        <Formik
+          initialValues={{
+            name: "",
+            email: "",
+            password: "",
+          }}
+          validationSchema={SignupSchema(isSignUp)}
+          onSubmit={handleSubmit}
+        >
+          {({
+            errors,
+            touched,
+            values,
+            isSubmitting,
+            isValid,
+            getFieldProps,
+          }) => (
+            <Form>
+              <div className="form">
+                {isSignUp && (
+                  <Field>
+                    <Label error={touched.name && errors.name}>👩‍💻 Name</Label>
+                    <Input name="name" type="text" {...getFieldProps("name")} />
+                  </Field>
+                )}
+                <Field>
+                  <Label error={touched.email && errors.email}>✉️ Email</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    {...getFieldProps("email")}
+                  />
+                </Field>
+                <Field>
+                  <Label error={touched.password && errors.password}>
+                    🔑 Password
+                  </Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    {...getFieldProps("password")}
+                  />
+                </Field>
+                <Button
+                  disabled={isSubmitting || !isValid}
+                  loading={isSubmitting}
+                >
+                  {isSignUp ? "Sign up" : "Log in"}
+                </Button>
+                <p className="error">{errors?.general}</p>{" "}
+              </div>
+            </Form>
           )}
-          <Field>
-            <Label error={state.errors?.email}>✉️ Email</Label>
-            <Input
-              type="email"
-              name="email"
-              value={state.email}
-              onChange={({ target }) =>
-                dispatch({ type: "update-email", value: target.value })
-              }
-            />
-          </Field>
-          <Field>
-            <Label error={state.errors?.password}>🔑 Password</Label>
-            <Input
-              type="password"
-              name="password"
-              value={state.password}
-              onChange={({ target }) =>
-                dispatch({ type: "update-password", value: target.value })
-              }
-            />
-          </Field>
-          <Button disabled={hasError()}>
-            {isSignUp ? "Sign up" : "Log in"}
-          </Button>
-          <p className="log-in-prompt">
-            {isSignUp ? "Have" : "Need"} an account?
-            <span className="small">
-              Click below, fill out the form, et vola!
-            </span>
-          </p>
-          <Button onClick={() => setIsSignUp(!isSignUp)}>
-            {isSignUp ? "Log in" : "Sign up"}
-          </Button>
-          <p className="error">{"errors?.auth"}</p>
-        </div>
+        </Formik>
+        <p className="log-in-prompt">
+          {isSignUp ? "Have" : "Need"} an account?
+          <span className="small">
+            Click below, fill out the form, et vola!
+          </span>
+        </p>
+        <Button onClick={() => setIsSignUp(!isSignUp)}>
+          {isSignUp ? "Log in" : "Sign up"}
+        </Button>
       </div>
       <style jsx>{`
         .error {
           text-align: center;
-          color: var(--pink);
+          color: var(--error);
         }
 
         .page {
           width: 100%;
           min-height: 100vh;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
         }

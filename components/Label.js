@@ -32,7 +32,7 @@ export default props => (
       }
 
       .error {
-        color: var(--pink);
+        color: var(--error);
       }
     `}</style>
   </>

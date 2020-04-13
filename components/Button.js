@@ -2,7 +2,9 @@ import React from "react";
 
 export default props => (
   <>
-    <button className="btn" {...props} />
+    <button className="btn" disabled={props.loading} {...props}>
+      {props.children} {props.loading && " - loading ..."}
+    </button>
     <style jsx>{`
       .btn {
         color: var(--foreground);
