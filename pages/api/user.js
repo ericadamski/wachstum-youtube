@@ -16,8 +16,10 @@ export default async (req, res) => {
 
     userId = id;
   } catch (error) {
-    return res.statud(401).end();
+    return res.status(401).end();
   }
+
+  DatabaseService.connect();
 
   const user = await User.findOne({ _id: userId }, { name: -1 });
 

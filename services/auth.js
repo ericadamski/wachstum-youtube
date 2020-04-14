@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken";
 import fetch from "isomorphic-unfetch";
+import Cookies from "cookies";
+import DatabaseService from "./database";
+import User from "../models/User";
 
 async function createUser(pwd) {
   const request = await fetch("https://paassword.now.sh/api/create", {
@@ -69,9 +72,28 @@ function verify(token) {
   });
 }
 
+async function getUserFromCookie(req) {
+  const cookies = new Cookies(req);
+
+  let payload;
+
+  try {
+    payload = await verify(cookies.get("_wsp"));
+  } catch (error) {
+    return null;
+  }
+
+  DatabaseService.connect();
+
+  const user = await User.findOne({ _id: payload.id }, { name: -1 });
+
+  return JSON.parse(JSON.stringify(user));
+}
+
 export default {
   createUser,
   validatePassword,
   sign,
   verify,
+  getUserFromCookie,
 };

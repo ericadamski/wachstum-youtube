@@ -1,12 +1,17 @@
 import Link from "next/link";
-import Cookie from "js-cookie";
+import useAuth from "../hooks/useAuth";
+import AuthService from "../services/auth";
 
-export default () => {
-  if (process.browser) alert(Cookie.get("_wsp"));
+export default (props) => {
+  const user = useAuth(props.user);
 
   return (
     <>
-      <h1>Hello, welcome to the second youtube video</h1>
+      <h1>
+        {user._id
+          ? `Bonjour ${user.name}`
+          : "Hello, welcome to the sixth youtube video"}
+      </h1>
       <a href="/login">login</a>
       <Link href="/login">
         <button>also login</button>
@@ -14,3 +19,12 @@ export default () => {
     </>
   );
 };
+
+// NODE JS CODE
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      user: await AuthService.getUserFromCookie(context.req),
+    },
+  };
+}
