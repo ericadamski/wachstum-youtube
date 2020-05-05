@@ -19,6 +19,12 @@
   "scripts": {
     "start": "next start",
     "build": "next build",
-    "dev": "next dev"
+    "dev": "next dev",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^10.0.4",
+    "babel-jest": "^26.0.1",
+    "jest": "^26.0.1"
   }
 }

@@ -8,7 +8,6 @@ import Input from "../components/Input";
 import Field from "../components/Field";
 import Label from "../components/Label";
 import Button from "../components/Button";
-import EmailService from "../services/email";
 
 const SignupSchema = (isSignUp) =>
   Yup.object().shape({
@@ -42,7 +41,7 @@ export default (props) => {
         sameSite: "lax",
       });
 
-      Router.push("/");
+      process.browser && Router.push("/");
     } else {
       // errors!
       const error = await request.text();
@@ -79,23 +78,37 @@ export default (props) => {
               <div className="form">
                 {isSignUp && (
                   <Field>
-                    <Label error={touched.name && errors.name}>👩‍💻 Name</Label>
-                    <Input name="name" type="text" {...getFieldProps("name")} />
+                    <Label htmlFor="name" error={touched.name && errors.name}>
+                      👩‍💻 Name
+                    </Label>
+                    <Input
+                      name="name"
+                      id="name"
+                      type="text"
+                      {...getFieldProps("name")}
+                    />
                   </Field>
                 )}
                 <Field>
-                  <Label error={touched.email && errors.email}>✉️ Email</Label>
+                  <Label htmlFor="email" error={touched.email && errors.email}>
+                    ✉️ Email
+                  </Label>
                   <Input
                     type="email"
+                    id="email"
                     name="email"
                     {...getFieldProps("email")}
                   />
                 </Field>
                 <Field>
-                  <Label error={touched.password && errors.password}>
+                  <Label
+                    htmlFor="password"
+                    error={touched.password && errors.password}
+                  >
                     🔑 Password
                   </Label>
                   <Input
+                    id="password"
                     type="password"
                     name="password"
                     {...getFieldProps("password")}
