@@ -7,7 +7,7 @@ jest.mock("../../services/auth", () => ({
   validatePassword: jest.fn((pwd) => pwd === "abc123"),
 }));
 
-jest.mock("../../models/user", () => {
+jest.mock("../../models/User", () => {
   const save = jest.fn();
   const User = jest.fn(() => ({ _id: "abc123", save }));
 
