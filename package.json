@@ -8,6 +8,7 @@
   "dependencies": {
     "cookies": "^0.8.0",
     "formik": "^2.1.4",
+    "isomorphic-unfetch": "*",
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "next": "^9.3.4",
