@@ -9,6 +9,7 @@
     "cookies": "^0.8.0",
     "formik": "^2.1.4",
     "js-cookie": "^2.2.1",
+    "isomorphic-unfetch": "*",
     "jsonwebtoken": "^8.5.1",
     "next": "^9.3.4",
     "react": "^16.13.1",
