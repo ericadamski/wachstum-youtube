@@ -1249,10 +1249,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@level.codes/score@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@level.codes/score/-/score-1.0.0.tgz#70ec125d2478cc82d3c0768f2e40e661bca8670a"
-  integrity sha512-Zy13WIhBQDObTRcMQQVcSPG/DIOw9qkhjMKi53SDWQu1tC7wRV9goBRRN8zKAeZyWazoUEzB5kswp4uYteAZpw==
+"@level.codes/score@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@level.codes/score/-/score-1.0.1.tgz#a67c15f3b0d38a345862aa7c3971e566d268aab0"
+  integrity sha512-dSCx5jTuh0fkKMCixPsVqDQTFdBlx0GsfuH/2CpLl1GYTwurLEwpTapOatsB+ASlD81n775CIuwJe6h1X7706A==
 
 "@sinonjs/commons@^1.7.0":
   version "1.7.2"

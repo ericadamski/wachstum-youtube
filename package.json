@@ -24,7 +24,7 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@level.codes/score": "^1.0.0",
+    "@level.codes/score": "^1.0.1",
     "@testing-library/react": "^10.0.4",
     "babel-jest": "^26.0.1",
     "jest": "^26.0.1"
