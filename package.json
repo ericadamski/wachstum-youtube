@@ -8,8 +8,8 @@
   "dependencies": {
     "cookies": "^0.8.0",
     "formik": "^2.1.4",
-    "js-cookie": "^2.2.1",
     "isomorphic-unfetch": "*",
+    "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "next": "^9.3.4",
     "react": "^16.13.1",
@@ -24,6 +24,7 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@level.codes/score": "^1.0.1",
     "@testing-library/react": "^10.0.4",
     "babel-jest": "^26.0.1",
     "jest": "^26.0.1"

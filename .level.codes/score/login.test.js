@@ -10,12 +10,16 @@ jest.mock("isomorphic-unfetch", () =>
 );
 
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import Level from "@level.codes/score";
 import fetch from "isomorphic-unfetch";
 import LoginPage from "../../pages/login";
+
+const score = Level.prepare();
 
 describe("Login Page", () => {
   describe("Logging in", () => {
     it("should allow me to log in", async () => {
+      score("Allows logging in.", 100);
       render(<LoginPage />);
 
       const email = "email@email.com";
