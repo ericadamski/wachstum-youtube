@@ -11,15 +11,18 @@ jest.mock("isomorphic-unfetch", () =>
 
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import fetch from "isomorphic-unfetch";
-import LoginPage from "../pages/login";
+import Level from "@level.codes/score";
+import LoginPage from "../../pages/login";
 
-async function score(name, points) {
-  if (!process.env.GITHUB_ACTIONS) return;
-  
-  const response = await fetch('https://test-level.now.sh/api/score', { method: 'POST', headers: { 'content-type': 'application/json' }, body: { name, points, repo: process.env.GITHUB_REPOSITORY, githubLogin: process.env.GITHUB_ACTOR } });
-  
-  console.log(response.ok, await response.text());
-}
+// async function score(name, points) {
+//   if (!process.env.GITHUB_ACTIONS) return;
+
+//   const response = await fetch('https://test-level.now.sh/api/score', { method: 'POST', headers: { 'content-type': 'application/json' }, body: { name, points, repo: process.env.GITHUB_REPOSITORY, githubLogin: process.env.GITHUB_ACTOR } });
+
+//   console.log(response.ok, await response.text());
+// }
+
+const score = Level.prepare();
 
 describe("Login Page", () => {
   describe("Logging in", () => {
@@ -42,8 +45,8 @@ describe("Login Page", () => {
       });
 
       fireEvent.click(screen.getByText("Log in"));
-      
-      await score('Can log in', 100)
+
+      score("Can log in", 100);
 
       await waitFor(() =>
         expect(fetch).toHaveBeenCalledWith(
