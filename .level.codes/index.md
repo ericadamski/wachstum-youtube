@@ -1,5 +1,5 @@
 ---
-title: "A test"
+title: "Using Magic with Next.js"
 description: "A description"
 points: 600
 ---
