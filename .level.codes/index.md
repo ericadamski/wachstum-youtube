@@ -245,11 +245,19 @@ This is a normal paragraph:
 
     This is a code block.
 
-Here is an example of AppleScript:
+Here is an example of JavaScript:
 
-    tell application "Foo"
-        beep
-    end tell
+```javascript
+function () {
+   let a;
+   
+   a = 10;
+   
+   const r = () => {
+      return "nonsense";
+   }
+}
+```
 
 A code block continues until it reaches a line that is not indented
 (or the end of the article).
@@ -260,15 +268,17 @@ easy to include example HTML source code using Markdown -- just paste
 it and indent it, and Markdown will handle the hassle of encoding the
 ampersands and angle brackets. For example, this:
 
+```html
     <div class="footer">
         &copy; 2004 Foo Corporation
     </div>
+```
 
 Regular Markdown syntax is not processed within code blocks. E.g.,
 asterisks are just literal asterisks within a code block. This means
 it's also easy to use Markdown to write about Markdown's own syntax.
 
-```
+```applescript
 tell application "Foo"
     beep
 end tell
