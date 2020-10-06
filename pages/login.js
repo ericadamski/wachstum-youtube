@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Formik, Form } from "formik";
-import fetch from "isomorphic-unfetch";
 import * as Yup from "yup";
 import Router from "next/router";
 import Cookie from "js-cookie";

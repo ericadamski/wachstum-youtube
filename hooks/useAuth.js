@@ -1,4 +1,3 @@
-import fetch from "isomorphic-unfetch";
 import useSWR from "swr";
 import Router from "next/router";
 import Cookie from "js-cookie";

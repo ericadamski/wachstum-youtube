@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import fetch from "isomorphic-unfetch";
 import Cookies from "cookies";
 import DatabaseService from "./database";
 import User from "../models/User";
